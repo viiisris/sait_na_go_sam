@@ -17,6 +17,12 @@ func main() {
 	defer manager.CloseDB()
 
 	mux := http.NewServeMux()
+
+	mux.HandleFunc("/register", manager.GuestMiddleware(manager.RegisterPage))
+	mux.HandleFunc("/register-submit", manager.GuestMiddleware(manager.Register))
+	mux.HandleFunc("/login", manager.GuestMiddleware(manager.LoginPage))
+	mux.HandleFunc("/login-submit", manager.GuestMiddleware(manager.Login))
+
 	mux.HandleFunc("/", manager.Home)
 	mux.HandleFunc("/add-product", manager.AddProductForm)
 	mux.HandleFunc("/add-product-submit", manager.AddProductSubmit)

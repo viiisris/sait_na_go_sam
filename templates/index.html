@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная страница</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
         table {
             border-collapse: collapse;
             width: 100%;
@@ -12,7 +16,7 @@
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
         }
         th {
@@ -27,21 +31,59 @@
             border-radius: 4px;
             margin-bottom: 20px;
         }
-        .add-button:hover {
-            background-color: #45a049;
+        .edit-button {
+            background-color: #2196F3;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .logout-button {
+            background-color: #f44336;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+        .user-info {
+            float: right;
+            margin-top: 10px;
+        }
+        .header {
+            overflow: hidden;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1><a href='/'>Домашняя страница</a></h1>
-    </header>
+    <div class="header">
+        <h1 style="display: inline-block;">Snippetbox</h1>
+        <div class="user-info">
+            <span>Привет, {{.User.Username}}!</span>
+            <a href="/logout" class="logout-button">Выйти</a>
+        </div>
+    </div>
+    
+    <nav>
+        <a href="/">Домашняя страница</a>
+    </nav>
+    
     <main>
-        <h2>Последние заметки</h2>
+        <h2>Список товаров</h2>
         
         <a href="/add-product" class="add-button">+ Добавить товар</a>
         
-        {{if .}}
+        {{if .Products}}
         <table>
             <thead>
                 <tr>
@@ -53,7 +95,7 @@
                 </tr>
             </thead>
             <tbody>
-                {{range .}}
+                {{range .Products}}
                 <tr>
                     <td>{{.ID}}</td>
                     <td>{{.Model}}</td>
@@ -62,15 +104,15 @@
                     <td class="actions">
                         <a href="/edit-product/{{.ID}}" class="edit-button">Редактировать</a>
                         <form action="/delete-product/{{.ID}}" method="POST" style="display: inline;">
-                            <button type="submit" class="delete-button" onclick="return confirm('Вы уверены, что хотите удалить этот товар?')">Удалить</button>
+                            <button type="submit" class="delete-button" onclick="return confirm('Вы уверены?')">Удалить</button>
                         </form>
-                    </td>                
+                    </td>
                 </tr>
                 {{end}}
             </tbody>
         </table>
         {{else}}
-        <p>Здесь пока ничего нет!</p>
+        <p>Товаров пока нет!</p>
         {{end}}
     </main>
 </body>

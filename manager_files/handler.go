@@ -13,6 +13,12 @@ func Home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	user := GetUserFromContext(r)
+	if user == nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
 	// Получаем все продукты из БД
 	products, err := GetAllProducts()
 	if err != nil {
@@ -38,6 +44,12 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddProductForm(w http.ResponseWriter, r *http.Request) {
+
+	user := GetUserFromContext(r)
+	if user == nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
 	// Проверяем, что это GET запрос
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -60,6 +72,12 @@ func AddProductForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddProductSubmit(w http.ResponseWriter, r *http.Request) {
+	user := GetUserFromContext(r)
+	if user == nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -102,6 +120,12 @@ func AddProductSubmit(w http.ResponseWriter, r *http.Request) {
 }
 
 func EditProductForm(w http.ResponseWriter, r *http.Request) {
+	user := GetUserFromContext(r)
+	if user == nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
 	idStr := r.URL.Path[len("/edit-product/"):]
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -174,6 +198,12 @@ func EditProductForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteProductForm(w http.ResponseWriter, r *http.Request) {
+	user := GetUserFromContext(r)
+	if user == nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
 	idStr := r.URL.Path[len("/delete-product/"):]
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
